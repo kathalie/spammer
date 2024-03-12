@@ -1,58 +1,62 @@
+const baseApiUrl = 'http://localhost:3000/api/'
+
 export async function getAllRecipients() {
-    const response = await fetch('http://localhost:3000/api/recipients');
-    const recipients = await response.json();
+    const url = `${baseApiUrl}/recipients`;
+    const response = await fetch(url);
 
-    const recipientsList = document.getElementById('recipientSelect');
-    recipientsList.innerHTML = '';
-
-    recipients.forEach((recipient) => {
-        const listItem = document.createElement('option');
-        listItem.className = 'list-group-item';
-        listItem.textContent = `${recipient.email}`;
-        recipientsList.appendChild(listItem);
-    });
-
-    return recipients
+    return response.json();
 }
 
-export function saveRecipient() {
-    const email = document.getElementById('email').value;
-    const firstName = document.getElementById('firstName').value;
-    const middleName = document.getElementById('middleName').value;
-    const lastName = document.getElementById('lastName').value;
+export async function getAllTemplates() {
+    const url = `${baseApiUrl}/templates`;
+    const response = await fetch(url);
 
-    const method = 'POST'
-    const url = 'http://localhost:3000/api/recipient';
+    return response.json();
+}
 
-    fetch(url, {
+export async function saveRecipient(email, firstName, middleName, lastName) {
+    const method = 'POST';
+    const url = `${baseApiUrl}/recipient`;
+
+    const response = await fetch(url, {
         method,
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, firstName, middleName, lastName }),
-    })
-        .then(() => document.getElementById('recipientForm').reset())
-        .catch(err => {
-            console.error('Error saving recipient');
-            console.log(err)
-        });
-
-    getAllRecipients().catch(err => {
-        console.error('Error fetching recipients');
-        console.log(err)
     });
+
+    return response.json();
+}
+export async function saveTemplate(text) {
+    const method = 'POST';
+    const url = `${baseApiUrl}/template`;
+
+    const response = await fetch(url, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+    });
+
+    return response.json();
 }
 
-export async function sendSpam() {
-    const recipients = await getAllRecipients();
+export async function deleteTemplate(templateId) {
+    const method = 'DELETE';
+    const url = `${baseApiUrl}/templates/${templateId}`;
 
-    console.log(recipients)
+    const response = await fetch(url, {
+        method,
+    });
 
-    const subject = document.getElementById('subjectField').value;
-    const text = document.getElementById('messageField').value;
+    return response.json();
+}
 
+export function sendSpam(recipients, subject, text) {
     const method = 'POST'
-    const url = 'http://localhost:3000/api/sendSpam';
+    const url = `${baseApiUrl}/sendSpam`;
 
     for (const recipient of recipients) {
         const email = recipient.email
@@ -67,7 +71,7 @@ export async function sendSpam() {
             .then(() => console.log(`Successfully sent to ${email}`))
             .catch(err => {
                 console.error(`Error sending email to ${email} `);
-                console.log(err)
+                console.log(err);
             });
     }
 }
