@@ -1,0 +1,31 @@
+<table class="table table-bordered" id="recipients-table">
+    <tbody>
+    <% recipients.forEach((recipient) => { %>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="col">
+                        <p>Email:
+                            <span class="recipient-email"><%= recipient.email %></span>
+                        </p>
+                        <p>Name:
+                            <span class="recipient-last-name"><%= recipient.lastName %></span>
+                            <span class="recipient-middle-name"><%= recipient.middleName %></span>
+                            <span class="recipient-first-name"><%= recipient.firstName %></span>
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-danger delete-button" data-recipient-id="<%= recipient['_id'] %>">-</button>
+                        <button class="btn btn-warning update-button"
+                                data-toggle="modal"
+                                data-target="#recipient-data-modal"
+                                data-recipient-id="<%= recipient['_id'] %>">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <% }); %>
+    </tbody>
+</table>

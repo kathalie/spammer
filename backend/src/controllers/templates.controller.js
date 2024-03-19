@@ -2,7 +2,6 @@ import TemplatesRepository from "../data-access/templates.repository.js";
 
 export async function saveTemplate (req, res){
     try {
-        console.log(req.body)
         const savedTemplate = await TemplatesRepository.saveTemplate(req.body);
         res.json(savedTemplate);
     } catch (error) {

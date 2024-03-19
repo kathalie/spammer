@@ -33,14 +33,34 @@ class RecipientsRepository {
         }
     }
 
-    static async getAllRecipients() {
+    static async getRecipient(recipientId) {
         try {
-            return await RecipientModel.find().sort({lastName: 'asc'});
+            return await RecipientModel.findById(recipientId);
+        } catch (error) {
+            console.error('Error deleting recipient');
+            console.error(error);
+            throw error;
+        }
+    }
+
+
+    static async getAllRecipients(page = 1, pageSize = 5) {
+        try {
+            const skipAmount = (page - 1) * pageSize;
+
+            return await RecipientModel.find()
+                .sort({ lastName: 'asc' })
+                .skip(skipAmount)
+                .limit(pageSize);
         } catch (error) {
             console.error('Error retrieving recipients');
             console.error(error);
             throw error;
         }
+    }
+
+    static async countAllRecipients() {
+        return RecipientModel.countDocuments();
     }
 }
 

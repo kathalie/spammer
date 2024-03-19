@@ -1,7 +1,7 @@
 import express from 'express';
 
 import {
-    deleteRecipient,
+    deleteRecipient, getRecipient,
     getRecipients,
     saveRecipient,
     sendSpam,
@@ -15,6 +15,7 @@ apiRouter.post('/sendSpam', sendSpam);
 apiRouter.post('/recipient', saveRecipient);
 apiRouter.put('/recipients/:id', updateRecipient);
 apiRouter.delete('/recipients/:id',  deleteRecipient);
+apiRouter.get('/recipients/:id', getRecipient);
 apiRouter.get('/recipients', getRecipients);
 
 apiRouter.post('/template', saveTemplate);

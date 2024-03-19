@@ -1,0 +1,19 @@
+
+<table class="table" id="templates-table">
+    <tbody>
+    <% templates.forEach((template) => { %>
+        <tr class="template-row">
+            <td>
+                <div class="row">
+                    <div class="col">
+                        <p class="template-text"><%= template.text %></p>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-danger delete-btn" data-recipient-id="<%= template['_id'] %>">-</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <% }); %>
+    </tbody>
+</table>
