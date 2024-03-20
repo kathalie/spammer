@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const templateSchema = new mongoose.Schema({
-    text: String,
+    message: String,
+    subject: String
 });
 
 export const TemplateModel = mongoose.model('Template', templateSchema);

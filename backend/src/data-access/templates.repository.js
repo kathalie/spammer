@@ -25,7 +25,7 @@ class TemplatesRepository {
 
     static async getAllTemplates() {
         try {
-            return await TemplateModel.find().sort({text: 'asc'});
+            return await TemplateModel.find().sort({message: 'asc'});
         } catch (error) {
             console.error('Error retrieving messages');
             console.error(error);

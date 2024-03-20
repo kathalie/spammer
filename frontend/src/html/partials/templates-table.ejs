@@ -6,9 +6,12 @@
             <td>
                 <div class="row">
                     <div class="col">
-                        <p class="template-text"><%= template.text %></p>
+                        <p><b>Subject:</b></p>
+                        <p class="template-subject"><%= template.subject %></p>
+                        <p><b>Message:</b></p>
+                        <p class="template-message"><%= template.message %></p>
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto align-self-center">
                         <button class="btn btn-danger delete-btn" data-recipient-id="<%= template['_id'] %>">-</button>
                     </div>
                 </div>

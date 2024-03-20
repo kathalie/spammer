@@ -31,7 +31,7 @@ export async function saveRecipient(email, firstName, middleName, lastName) {
 
     return response.json();
 }
-export async function saveTemplate(text) {
+export async function saveTemplate(message, subject) {
     const method = 'POST';
     const url = `${baseApiUrl}/template`;
 
@@ -40,7 +40,7 @@ export async function saveTemplate(text) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ message, subject }),
     });
 
     return response.json();

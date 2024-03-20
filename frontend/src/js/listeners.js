@@ -53,6 +53,7 @@ function handleDeleteTemplate(id) {
 export function addListenersToTemplatesTable() {
     const templatesTable = document.getElementById('templates-table');
     const messageField = document.getElementById('message-field');
+    const subjectField = document.getElementById('subject-field');
 
     templatesTable.addEventListener('click', event => {
         if (event.target.classList.contains('delete-btn')) {
@@ -65,10 +66,11 @@ export function addListenersToTemplatesTable() {
         }
 
         const templateRow = event.target.closest('.template-row');
-        const templateContainer = templateRow.querySelector('.template-text');
+        const messageContainer = templateRow.querySelector('.template-message');
+        const subjectContainer = templateRow.querySelector('.template-subject');
 
-        messageField.innerText = templateContainer.innerText;
-
+        messageField.innerText = messageContainer.innerText;
+        subjectField.innerText = subjectContainer.innerText;
     });
 }
 
@@ -160,14 +162,15 @@ export async function addListenerToSaveTemplateButton() {
     const button = document.getElementById('save-message-template-button');
 
     button.addEventListener('click',  () => {
-        const text = document.getElementById('message-field').value;
+        const message = document.getElementById('message-field').value;
+        const subject = document.getElementById('subject-field').value;
 
-        saveTemplate(text)
+        saveTemplate(message, subject)
             .then(() => {
                 location.reload();
             })
             .catch(err => {
-                alert('Failed to save a message template');
+                alert('Failed to save an email template');
                 console.log(err)
             });
     });
