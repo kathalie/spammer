@@ -43,6 +43,9 @@ export function addListenersToTemplatesTable() {
 
         messageField.innerText = messageContainer.innerText;
         subjectField.innerText = subjectContainer.innerText;
+
+        const modal = document.getElementById('templates-modal');
+        modal.querySelector('.close-modal').click();
     });
 }
 
@@ -97,18 +100,16 @@ export function addListenerToSaveRecipientDataButton() {
         const middleName = document.getElementById('update-middle-name-field').value;
         const lastName = document.getElementById('update-last-name-field').value;
 
-        console.log(modal.classList)
-
         if (modal.hasAttribute('update')) {
             handleFetch(
                 async () => await editRecipient(id, email, firstName, middleName, lastName),
-                'Failed to update recipient.'
+                'Failed to update recipient. Probably such email already exists.'
             );
         }
         else {
             handleFetch(
                 async () => await saveRecipient(email, firstName, middleName, lastName),
-                'Failed to create recipient.'
+                'Failed to create recipient. Probably such email already exists.'
             );
         }
     })
