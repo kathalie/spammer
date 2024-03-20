@@ -7,27 +7,7 @@ import {
     sendSpam
 } from "./fetcher.js";
 import {deleteTemplate} from "./fetcher.js";
-
-export function addListenerToSaveRecipientButton() {
-    const button = document.getElementById('save-recipient-button');
-
-    button.addEventListener('click',  () => {
-        const email = document.getElementById('email').value;
-        const firstName = document.getElementById('first-name').value;
-        const middleName = document.getElementById('middle-name').value;
-        const lastName = document.getElementById('last-name').value;
-
-        saveRecipient(email, firstName, middleName, lastName)
-            .then(() => {
-                document.getElementById('recipient-form').reset();
-                location.reload();
-            })
-            .catch(err => {
-                alert('Failed to save recipient');
-                console.log(err);
-            });
-    });
-}
+import {handleFetch} from "./utils.js";
 
 export function addListenerToCreateRecipientButton() {
     const button = document.getElementById('create-recipient-button');
@@ -39,17 +19,6 @@ export function addListenerToCreateRecipientButton() {
     })
 }
 
-function handleDeleteTemplate(id) {
-    deleteTemplate(id)
-        .then(() => {
-            location.reload();
-        })
-        .catch(err => {
-            alert('Failed to delete a template.');
-            console.log(err);
-        });
-}
-
 export function addListenersToTemplatesTable() {
     const templatesTable = document.getElementById('templates-table');
     const messageField = document.getElementById('message-field');
@@ -58,9 +27,12 @@ export function addListenersToTemplatesTable() {
     templatesTable.addEventListener('click', event => {
         if (event.target.classList.contains('delete-btn')) {
             const button = event.target.closest('button');
-            const id = button.getAttribute('data-recipient-id');
+            const templateId = button.getAttribute('data-template-id');
 
-            handleDeleteTemplate(id);
+            handleFetch(
+                async () => await deleteTemplate(templateId),
+                'Failed to delete a template.'
+            );
 
             return;
         }
@@ -74,17 +46,6 @@ export function addListenersToTemplatesTable() {
     });
 }
 
-function handleDeleteRecipient(id) {
-    deleteRecipient(id)
-        .then(() => {
-            location.reload();
-        })
-        .catch(err => {
-            alert('Failed to delete a recipient.');
-            console.log(err);
-        });
-}
-
 export function addListenersToRecipientsTable() {
     const recipientsTable = document.getElementById('recipients-table');
 
@@ -93,7 +54,10 @@ export function addListenersToRecipientsTable() {
             const button = event.target.closest('button');
             const recipientId = button.getAttribute('data-recipient-id');
 
-            handleDeleteRecipient(recipientId);
+            handleFetch(
+                async () => await deleteRecipient(recipientId),
+                'Failed to delete a recipient.'
+            );
 
             return;
         }
@@ -136,24 +100,16 @@ export function addListenerToSaveRecipientDataButton() {
         console.log(modal.classList)
 
         if (modal.hasAttribute('update')) {
-            editRecipient(id, email, firstName, middleName, lastName)
-                .then(() => {
-                    location.reload()
-                })
-                .catch(err => {
-                    alert('Failed to update recipient');
-                    console.log(err)
-                });
+            handleFetch(
+                async () => await editRecipient(id, email, firstName, middleName, lastName),
+                'Failed to update recipient.'
+            );
         }
         else {
-            saveRecipient(email, firstName, middleName, lastName)
-                .then(() => {
-                    location.reload()
-                })
-                .catch(err => {
-                    alert('Failed to create recipient');
-                    console.log(err)
-                });
+            handleFetch(
+                async () => await saveRecipient(email, firstName, middleName, lastName),
+                'Failed to create recipient.'
+            );
         }
     })
 }
@@ -165,14 +121,10 @@ export async function addListenerToSaveTemplateButton() {
         const message = document.getElementById('message-field').value;
         const subject = document.getElementById('subject-field').value;
 
-        saveTemplate(message, subject)
-            .then(() => {
-                location.reload();
-            })
-            .catch(err => {
-                alert('Failed to save an email template');
-                console.log(err)
-            });
+        handleFetch(
+            async () => await saveTemplate(message, subject),
+            'Failed to save an email template.'
+        );
     });
 }
 
